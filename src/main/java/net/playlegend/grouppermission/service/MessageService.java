@@ -47,6 +47,28 @@ public class MessageService {
     }
 
     /**
+     * Replaces a placeholder of {} in a string
+     * @param input the inputstring including given placeholder
+     * @param placeholder the placeholder which is in $ format
+     * @param replacement the string the placeholder should be replaced with
+     * @return replaced string - if no placeholder will be found, nothing will happen
+     */
+    public String replacePlaceholder(String input, String placeholder, String replacement) {
+        String[] splitted = input.split("$");
+        if (splitted.length <= 1) {
+            return input;
+        }
+        String output = "";
+        for (int i = 0; i < splitted.length; i++) {
+            if (splitted[i].equalsIgnoreCase(placeholder)) {
+                splitted[i] = replacement;
+            }
+            output += splitted[i] + " ";
+        }
+        return output;
+    }
+
+    /**
      * Will initialize all default messages.
      * Will not override messages which have been changed manually by user.
      */
