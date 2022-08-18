@@ -1,5 +1,6 @@
 package net.playlegend.grouppermission.command;
 
+import net.playlegend.grouppermission.service.GroupService;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,21 +20,48 @@ import org.bukkit.command.CommandSender;
  * group help - see all help information about group command
  */
 public class GroupCommand implements CommandExecutor {
+
+    private GroupService service;
+
+    public GroupCommand() {
+        service = GroupService.getInstance();
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!sender.hasPermission("grouppermission.admin") || args.length == 0) {
-            //TODO: send info for current group
+            service.infoGroup(sender, sender.getName());
             return true;
         }
 
-        if (args.length == 2) {
-
+        if (args.length == 1) {
+            service.infoGroup(sender, args[0]);
+        } else if (args.length == 2) {
+            if (args[0].equalsIgnoreCase("create")) {
+                service.createGroup(sender, args[1]);
+            } else if (args[0].equalsIgnoreCase("remove")) {
+                service.removeMember(sender, args[1]);
+            } else if (args[0].equalsIgnoreCase("delete")) {
+                service.deleteGroup(sender, args[1]);
+            } else {
+                sendHelp(sender);
+            }
         } else if (args.length == 3) {
-
+            if (args[1].equalsIgnoreCase("prefix")) {
+                service.changePrefix(sender, args[0], args[2]);
+            } else if (args[1].equalsIgnoreCase("add")) {
+                service.addMember(sender, args[0], args[2]);
+            } else {
+                sendHelp(sender);
+            }
         } else if (args.length == 4) {
-
+            if (args[1].equalsIgnoreCase("add")) {
+                service.addMember(sender, args[0], args[2], args[3]);
+            } else {
+                sendHelp(sender);
+            }
         } else {
-
+            sendHelp(sender);
         }
         return true;
     }

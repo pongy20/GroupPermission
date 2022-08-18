@@ -41,7 +41,7 @@ public class GroupPlayerRepository extends Repository {
                     "groupId INTEGER NOT NULL," +
                     "until BIGINT," +
                     "CONSTRAINT pk_uuid PRIMARY KEY(uuid)," +
-                    "CONSTRAINT fk_group FOREIGN KEY(groupId) REFERENCES group(groupId))");
+                    "CONSTRAINT fk_group FOREIGN KEY(groupId) REFERENCES group(groupId) ON DELETE CASCADE)");
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
