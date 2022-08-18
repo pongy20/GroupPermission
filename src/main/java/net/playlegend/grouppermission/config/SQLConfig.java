@@ -16,7 +16,7 @@ public class SQLConfig extends Config {
     public String host, port, database, user, password;
     
     private SQLConfig() {
-        super("GroupPermission", "mysql-config.yml");
+        super("plugins/GroupPermission", "mysql-config.yml");
     }
 
     @Override
@@ -25,7 +25,7 @@ public class SQLConfig extends Config {
         cfg.options().copyDefaults(true);
 
         cfg.addDefault("host","playlegend.net");
-        cfg.addDefault("port", "3006");
+        cfg.addDefault("port", "3306");
         cfg.addDefault("database", "");
         cfg.addDefault("username", "");
         cfg.addDefault("password", "");

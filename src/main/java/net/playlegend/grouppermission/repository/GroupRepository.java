@@ -12,7 +12,7 @@ import java.util.List;
  * Table syntax:
  *
  * groupid INTEGER AUTO_INCREMENT --> PRIMARY KEY
- * name VARCHAR(32) NOT NULL --> Unique
+ * groupname VARCHAR(32) NOT NULL --> Unique
  * prefix VARCHAR(32) NULLABLE
  */
 public class GroupRepository extends Repository {
@@ -33,11 +33,11 @@ public class GroupRepository extends Repository {
     public void createTable() {
         try {
             PreparedStatement ps = sql.getConnection().prepareStatement("CREATE TABLE IF NOT EXISTS " + tableName +
-                    " (groupId INTEGER AUTO_INCREMENT," +
-                    "name VARCHAR(32) NOT NULL," +
+                    " (groupId INTEGER NOT NULL AUTO_INCREMENT," +
+                    "groupname VARCHAR(32) NOT NULL," +
                     "prefix VARCHAR(32)," +
                     "CONSTRAINT pk_group PRIMARY KEY(groupId)," +
-                    "CONSTRAINT uk_name UNIQUE(name))");
+                    "CONSTRAINT uk_name UNIQUE(groupname))");
             ps.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -49,7 +49,7 @@ public class GroupRepository extends Repository {
      */
     public boolean doesGroupExists(String name) {
         try {
-            PreparedStatement ps = sql.getConnection().prepareStatement("SELECT name FROM " + tableName + " WHERE name = ?");
+            PreparedStatement ps = sql.getConnection().prepareStatement("SELECT groupname FROM " + tableName + " WHERE groupname = ?");
             ps.setString(1, name);
             ResultSet rs = ps.executeQuery();
             return rs.next();
@@ -67,7 +67,7 @@ public class GroupRepository extends Repository {
         if (doesGroupExists(name)) return;
         try {
             PreparedStatement ps = sql.getConnection().prepareStatement("INSERT INTO " + tableName +
-                    " (name) VALUES (?)");
+                    " (groupname) VALUES (?)");
             ps.setString(1, name);
             ps.execute();
         } catch (SQLException e) {
@@ -80,7 +80,7 @@ public class GroupRepository extends Repository {
      */
     public Group getGroupByName(String name) {
         try {
-            PreparedStatement ps = sql.getConnection().prepareStatement("SELECT * FROM " + tableName + " WHERE name = ?");
+            PreparedStatement ps = sql.getConnection().prepareStatement("SELECT * FROM " + tableName + " WHERE groupname = ?");
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return getGroupByResultSetEntry(rs);
@@ -127,7 +127,7 @@ public class GroupRepository extends Repository {
     public void updateName(int id, String newName) {
         try {
             PreparedStatement ps = sql.getConnection().prepareStatement("UPDATE " + tableName +
-                    " SET name = ? WHERE id = ?");
+                    " SET groupname = ? WHERE id = ?");
             ps.setString(1, newName);
             ps.setInt(2, id);
             ps.execute();
@@ -156,7 +156,7 @@ public class GroupRepository extends Repository {
      */
     public void deleteGroup(String name) {
         try {
-            PreparedStatement ps = sql.getConnection().prepareStatement("DELETE FROM " + tableName + " WHERE name = ?");
+            PreparedStatement ps = sql.getConnection().prepareStatement("DELETE FROM " + tableName + " WHERE groupname = ?");
             ps.setString(1, name);
             ps.execute();
         } catch (SQLException e) {
@@ -171,7 +171,7 @@ public class GroupRepository extends Repository {
     private Group getGroupByResultSetEntry(ResultSet rs) throws SQLException {
         if (rs == null) return null;
         int groupId = rs.getInt("groupId");
-        String name = rs.getString("name");
+        String name = rs.getString("groupname");
         String prefix = rs.getString("prefix");
         return new Group(groupId, name, prefix);
     }

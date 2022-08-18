@@ -1,6 +1,6 @@
 name: GroupPermission
 version: '${project.version}'
-main: net.playlegend.grouppermission.Grouppermission
+main: net.playlegend.grouppermission.GroupPermission
 api-version: 1.18
 authors: [ pongy20 ]
 description: Bewerberplugin für PlayLegend

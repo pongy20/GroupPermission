@@ -5,7 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class MessageConfig extends Config {
 
     public MessageConfig() {
-        super("GroupPermission", "messages.yml");
+        super("plugins/GroupPermission", "messages.yml");
     }
 
     /**
